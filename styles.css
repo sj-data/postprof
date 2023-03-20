@@ -13,6 +13,11 @@
   padding: 0 1em !important;
   position: relative !important;
   text-align: center !important;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease-in-out;
 }
 
 .reformat-button:hover {

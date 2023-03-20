@@ -15,11 +15,23 @@ function fetchReformatButtonHTML(callback) {
 
 function addButton() {
   const tweetButton = document.querySelector('[data-testid="tweetButtonInline"]');
-  if (!tweetButton) return;
+  const replyButtons = document.querySelectorAll('[data-testid="tweetButton"]');
 
-  const existingReformatButton = document.querySelector('[data-testid="reformatButtonInline"]');
-  if (existingReformatButton) return;
+  if (tweetButton) {
+    const existingReformatButton = tweetButton.nextElementSibling;
+    if (!existingReformatButton || !existingReformatButton.matches('[data-testid="reformatButtonInline"]')) {
+      insertReformatButton(tweetButton);
+    }
+  }
 
+  replyButtons.forEach((replyButton) => {
+    const existingReformatButton = replyButton.nextElementSibling;
+    if (!existingReformatButton || !existingReformatButton.matches('[data-testid="reformatButtonInline"]')) {
+      insertReformatButton(replyButton);
+    }
+  });
+}
+function insertReformatButton(afterElement) {
   fetchReformatButtonHTML((error, reformatButtonHTML) => {
     if (error) {
       console.error('Failed to fetch reformat-button.html:', error);
@@ -32,7 +44,7 @@ function addButton() {
 
     reformatButton.addEventListener('click', insertTest);
 
-    tweetButton.parentNode.insertBefore(reformatButton, tweetButton.nextSibling);
+    afterElement.parentNode.insertBefore(reformatButton, afterElement.nextSibling);
   });
 }
 
@@ -100,7 +112,18 @@ function deleteOriginalText() {
 document.addEventListener('click', async (event) => {
   if (event.target.closest('[data-testid="reformatButtonInline"]')) {
     const userText = getUserText();
-    const style = "Pirate style";
+
+    // Wrap the style retrieval in a Promise
+    const getStyle = () => {
+      return new Promise((resolve) => {
+        chrome.storage.sync.get('style', (data) => {
+          resolve(data.style || 'Pirate style');
+        });
+      });
+    };
+
+    // Await the style retrieval
+    const style = await getStyle();
 
     // Modify this part to request generated text from GPT API or any other text manipulation
     const modifiedText = await fetchModifiedText(userText, style);

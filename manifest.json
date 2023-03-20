@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "A Chrome extension that adds a button to reformat tweets",
   "permissions": [
-    "activeTab"
+    "activeTab", "storage"
   ],
   "action": {
     "default_popup": "popup.html",
