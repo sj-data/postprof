@@ -5,3 +5,4 @@ function getUserText() {
   const userText = input.textContent || input.innerText;
   return userText;
 }
+
