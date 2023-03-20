@@ -2,7 +2,7 @@
 
 A Chrome extension that adds a button to reformat tweets using OpenAI's GPT-3.5 API.
 
-![Tweet Reformatter Logo](icon256.png)
+![Tweet Reformatter Logo](images/icon256.png)
 
 ## Features
 
